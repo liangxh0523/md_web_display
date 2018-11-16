@@ -39,12 +39,12 @@ export default {
 </script>
 <style lang="less" scoped>
 .el-container {
-    height: 100%;
     width: 100%;
     .el-header {
         position: fixed;
         height: 60px;
         width: 100%;
+        z-index: 3;
         border-bottom: 1px solid #dedede;
         background-color: #fff;
         img {

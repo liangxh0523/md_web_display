@@ -8,6 +8,7 @@ import router from '@/router/router.js'
 import Layout from '@/pages/layout.vue';
 
 import '@/static/main.css'
+import '@/static/markdown.css'
 
 Vue.use(ElementUI);
 
