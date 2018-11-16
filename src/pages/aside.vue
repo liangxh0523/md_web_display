@@ -76,8 +76,29 @@
                 return this.$route.path.split('/').reverse()[0] || '';
             }
         },
+        props: {
+            parentID: {
+                type: String
+            }
+        },
+        created() {
+            console.log(85);
+            
+            if (!this.activeName) {
+                this.jumpRouter();
+            }
+        },
         methods: {
-
+            jumpRouter() {
+                let defaultPath = this.menuList.length > 0 ? this.menuList[0].index : '';
+                let param = {
+                    name: 'demo',
+                    params: {
+                        menuID: defaultPath
+                    }
+                };
+                this.$router.push(param);
+            }
         }
     }
 </script>
