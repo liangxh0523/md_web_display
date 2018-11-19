@@ -86,13 +86,13 @@ export default {
             let navLevel = [1, 2];
             let tempArr = [];
             content
-                .replace(/```/g, function(match) {
+                .replace(/```/g, function() {
                     return '\f';
                 })
-                .replace(/\f[^\f]*?\f/g, function(match) {
+                .replace(/\f[^\f]*?\f/g, function() {
                     return '';
                 })
-                .replace(/\r|\n+/g, function(match) {
+                .replace(/\r|\n+/g, function() {
                     return '\n';
                 })
                 // 以至少一个#开始，紧接非换行符外任意个字符进行惰性匹配，然后是一个换行符
@@ -188,7 +188,6 @@ export default {
             return ret;
         },
         onScroll() {
-            console.log(1);
             let top = document.documentElement ? document.documentElement.scrollTop : document.body.scrollTop;
             let items = document.getElementById('content').getElementsByClassName('jump');
             let currentId = '';
@@ -201,7 +200,6 @@ export default {
                     break;
                 }
             }
-            console.log(203);
             if (currentId) {
                 this.highlightIndex = parseInt(currentId);
             }
@@ -224,23 +222,19 @@ export default {
             function smoothDown() {
                 if (distance < total) {
                     distance += step;
-                    document.body.scrollTop = distance;
-                    document.documentElement.scrollTop = distance;
+                    window.scrollTo(0, distance);
                     setTimeout(smoothDown, 10);
                 } else {
-                    document.body.scrollTop = total;
-                    document.documentElement.scrollTop = total;
+                    window.scrollTo(0, total);
                 }
             }
             function smoothUp() {
                 if (distance > total) {
                     distance -= step;
-                    document.body.scrollTop = distance;
-                    document.documentElement.scrollTop = distance;
+                    window.scrollTo(0, distance);
                     setTimeout(smoothUp, 10);
                 } else {
-                    document.body.scrollTop = total;
-                    document.documentElement.scrollTop = total;
+                    window.scrollTo(0, total);
                 }
             }
         }
@@ -250,7 +244,6 @@ export default {
 <style lang="less" scoped>
 .main {
     width: 100%;
-    height: 100%;
     background: #FCFCFC;
 }
 .content {
