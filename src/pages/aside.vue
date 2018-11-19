@@ -37,8 +37,8 @@
             return {
                 menuList: [
                     {
-                        name: '默认激活第一项',
-                        index: 'raw_js',
+                        name: '原声js的方式',
+                        index: 'raw_js_demo',
                         children: []
                     },
                     {
@@ -46,8 +46,8 @@
                         index: 'demo_02',
                         children: [
                             {
-                                name: '子菜单一',
-                                index: 'child_01'
+                                name: 'css的方式',
+                                index: 'css_demo'
                             },
                             {
                                 name: '子菜单二',
@@ -83,14 +83,14 @@
         },
         methods: {
             initRouter() {
-                // let defaultPath = this.menuList.length > 0 ? (this.menuList[0].children.length > 0 ? this.menuList[0].children[0].index : this.menuList[0].index) : '';
-                // let param = {
-                //     name: 'raw_js',
-                //     params: {
-                //         menuID: defaultPath
-                //     }
-                // };
-                this.$router.push('raw_js');
+                let defaultPath = this.menuList.length > 0 ? (this.menuList[0].children.length > 0 ? this.menuList[0].children[0].index : this.menuList[0].index) : '';
+                let param = {
+                    name: 'demo',
+                    params: {
+                        menuID: defaultPath
+                    }
+                };
+                this.$router.push(param);
             }
         }
     }

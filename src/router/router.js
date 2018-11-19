@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import RawJS from '@/pages/main_content.vue';
+import MainContent from '@/pages/main_content.vue';
+import Parent from '@/pages/parent.vue';
 
 Vue.use(VueRouter);
 
@@ -13,12 +14,19 @@ export default new VueRouter({
         {
             path: '/',
             name: 'home',
-            redirect: '/raw_js'
-        },
-        {
-            path: '/raw_js',
-            name: 'raw_js',
-            component: RawJS,
+            component: Parent,
+            children: [
+                {
+                    path: '',
+                    component: MainContent
+                },
+                {
+                    path: ':menuID',
+                    name: 'demo',
+                    component: MainContent,
+                    props: true
+                }
+            ]
         }
     ]
 })

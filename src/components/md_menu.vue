@@ -28,15 +28,57 @@ export default {
     data: function() {
         return {
             highlightIndex: 0,
-            contentMenu: []
+            contentMenu: [],
+            mode: ''
+        }
+    },
+    mounted() {
+        this.$nextTick(function() {
+            window.addEventListener('scroll', this.onScroll);
+        });
+    },
+    watch: {
+        '$route.path': function(newValue, oldValue) {
+            this.mode = newValue.slice(1);
         }
     },
     created() {
         this.contentMenu = getTitle(str);
+        this.mode = this.$route.path.slice(1);
+    },
+    // 如果还有别的组件，一定要移除掉 scroll的监听事件
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.onScroll);
     },
     methods: {
         handleHighlight(item) {
             this.highlightIndex = item;
+            // 这里的处理只是为了同时展示多个demo，正常项目里不要这样处理
+            if (this.mode === 'raw_js_demo') {
+                document.getElementsByTagName("html")[0].style['scroll-behavior'] = '';
+                this.rawJsScroll(item);
+            } else if (this.mode === 'css_demo') {
+                document.getElementsByTagName("html")[0].style['scroll-behavior'] = 'smooth';
+            }
+        },
+        onScroll() {
+            let top = document.documentElement ? document.documentElement.scrollTop : document.body.scrollTop;
+            let items = document.getElementById('content').getElementsByClassName('jump');
+            let currentId = '';
+            for (let i = 0; i < items.length; i++) {
+                let _item = items[i];
+                let _itemTop = _item.offsetTop;
+                if (top > _itemTop - 75) {
+                    currentId = _item.id;
+                } else {
+                    break;
+                }
+            }
+            if (currentId) {
+                this.highlightIndex = parseInt(currentId);
+            }
+        },
+        rawJsScroll(item) {
             let jump = document.querySelectorAll('.jump');
             //  这里的60是header的高度值
             let total = jump[item].offsetTop - 60;

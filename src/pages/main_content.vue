@@ -48,34 +48,6 @@ export default {
             };
             return marked(str);
         }
-    },
-    mounted() {
-        this.$nextTick(function() {
-            window.addEventListener('scroll', this.onScroll);
-        });
-    },
-    // 如果还有别的组件，一定要移除掉 scroll的监听事件
-    beforeDestroy() {
-        window.removeEventListener('scroll', this.onScroll);
-    },
-    methods: {
-        onScroll() {
-            let top = document.documentElement ? document.documentElement.scrollTop : document.body.scrollTop;
-            let items = document.getElementById('content').getElementsByClassName('jump');
-            let currentId = '';
-            for (let i = 0; i < items.length; i++) {
-                let _item = items[i];
-                let _itemTop = _item.offsetTop;
-                if (top > _itemTop - 75) {
-                    currentId = _item.id;
-                } else {
-                    break;
-                }
-            }
-            if (currentId) {
-                this.highlightIndex = parseInt(currentId);
-            }
-        }
     }
 }
 </script>
