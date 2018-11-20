@@ -46,14 +46,17 @@ export default {
                 let index = 0;
                 //  在rendererMD.heading里有自己的作用域，用this访问不到
                 let mode = this.mode
-                // 这里的处理只是为了同时展示多个demo，正常项目里不要这样处理
+                // 这里的处理只是为了同时展示多个demo
+                // 原声JS的优点：兼容性好    缺点：代码长、复杂
+                // css方式和JS的scrollIntoView()方法的优点： 代码简单优美   缺点：不能兼容safari浏览器，兼容opera、chrome、firefox
                 rendererMD.heading = function(text, level) {
                     if (level < 3) {
-                        console.log(mode)
                         if (mode === 'raw_js_demo') {
                             return `<h${level} id="${index++}" class="jump" >${text}</h${level}>`;
                         } else if (mode === 'css_demo') {
                             return `<div class="jump offset" id="${index++}"></div><h${level}>${text}</h${level}>`;
+                        } else if (mode === 'scroll_into_view') {
+                           return `<div class="jump offset"></div><h${level}>${text}</h${level}>`;
                         }
                     } else {
                         return `<h${level}>${text}</h${level}>`;

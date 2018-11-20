@@ -4,6 +4,7 @@
             :default-active="activeName"
             background-color="#3A4474"
             text-color="#fff"
+            :default-openeds="openedMenu"
             router>
             <template 
                 v-for="item in menuList">
@@ -48,28 +49,19 @@
                             {
                                 name: 'css的方式',
                                 index: 'css_demo'
-                            },
-                            {
-                                name: '子菜单二',
-                                index: 'child_02'
-                            },
-                            {
-                                name: '子菜单三',
-                                index: 'child_03'
-                            },
-                            {
-                                name: '子菜单四',
-                                index: 'child_04'
                             }
                         ]
                     },
                     {
-                        name: '第三项菜单',
-                        index: 'demo_03',
+                        name: 'scrollIntoView方法',
+                        index: 'scroll_into_view',
                         children: []
                     }
+                ],
+                openedMenu: [
+                    'demo_02'
                 ]
-            }
+            };
         },
         computed: {
             activeName: function() {

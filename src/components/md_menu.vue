@@ -53,6 +53,12 @@ export default {
             this.highlightIndex = item;
             if (this.mode === 'raw_js_demo') {
                 this.rawJsScroll(item);
+            } else if (this.mode === 'scroll_into_view') {
+                let jump = document.querySelectorAll('.jump');
+                jump[item].scrollIntoView({
+                    block: 'start',
+                    behavior: "smooth"
+                });
             }
         },
         onScroll() {
@@ -65,7 +71,7 @@ export default {
                 //  处理不同方式时的偏移量不同
                 let height = this.mode === 'raw_js_demo' ? 75 : (this.mode === 'css_demo' ? 10 : 0);
                 if (top > _itemTop - height) {
-                    currentId = _item.id;
+                    currentId = i;
                 } else {
                     break;
                 }
