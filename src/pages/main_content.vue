@@ -3,9 +3,9 @@
         <div class="mian-content">
             <div class="markdown-body" ref="content" id="content" v-html="compiledMarkdown">
             </div>
-        </div>
+        </div> 
         <div class="menu">
-            <md-aside/>
+            <md-aside :mode="mode"/>
         </div>
     </div>
 </template>
@@ -31,22 +31,41 @@ marked.setOptions({
 export default {
     data: function() {
         return {
+            mode: '',
+            compiledMarkdown: ''
         }
     },
     components: {
         mdAside
     },
-    computed: {
-        compiledMarkdown: function() {
-            let index = 0;
-            rendererMD.heading = function(text, level) {
-                if (level < 3) {
-                    return `<h${level} id="${index++}" class="jump" >${text}</h${level}>`;
-                } else {
-                    return `<h${level}>${text}</h${level}>`;
+    watch: {
+        '$route.path': {
+            immediate:true,
+            handler: function(newValue, oldValue) {
+                this.mode = newValue.slice(1);
+                let index = 0;
+                // 这里的处理只是为了同时展示多个demo，正常项目里不要这样处理
+                if (this.mode === 'raw_js_demo') {
+                    rendererMD.heading = function(text, level) {
+                       if (level < 3) {
+                           return `<h${level} id="${index++}" class="jump" >${text}</h${level}>`;
+                        } else {
+                           return `<h${level}>${text}</h${level}>`;
+                        }
+                    };
+                document.getElementsByTagName("html")[0].style['scroll-behavior'] = '';
+                } else if (this.mode === 'css_demo') {
+                    rendererMD.heading = function(text, level) {
+                       if (level < 3) {
+                           return `<div class="jump offset" id="${index++}"></div><h${level}>${text}</h${level}>`;
+                        } else {
+                           return `<h${level}>${text}</h${level}>`;
+                        }
+                    };
+                    document.getElementsByTagName("html")[0].style['scroll-behavior'] = 'smooth';
                 }
-            };
-            return marked(str);
+                this.compiledMarkdown = marked(str);
+            }
         }
     }
 }

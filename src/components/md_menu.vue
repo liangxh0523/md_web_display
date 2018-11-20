@@ -28,8 +28,12 @@ export default {
     data: function() {
         return {
             highlightIndex: 0,
-            contentMenu: [],
-            mode: ''
+            contentMenu: []
+        }
+    },
+    props: {
+        mode: {
+            type: String
         }
     },
     mounted() {
@@ -37,14 +41,8 @@ export default {
             window.addEventListener('scroll', this.onScroll);
         });
     },
-    watch: {
-        '$route.path': function(newValue, oldValue) {
-            this.mode = newValue.slice(1);
-        }
-    },
     created() {
         this.contentMenu = getTitle(str);
-        this.mode = this.$route.path.slice(1);
     },
     // 如果还有别的组件，一定要移除掉 scroll的监听事件
     beforeDestroy() {
@@ -53,12 +51,8 @@ export default {
     methods: {
         handleHighlight(item) {
             this.highlightIndex = item;
-            // 这里的处理只是为了同时展示多个demo，正常项目里不要这样处理
             if (this.mode === 'raw_js_demo') {
-                document.getElementsByTagName("html")[0].style['scroll-behavior'] = '';
                 this.rawJsScroll(item);
-            } else if (this.mode === 'css_demo') {
-                document.getElementsByTagName("html")[0].style['scroll-behavior'] = 'smooth';
             }
         },
         onScroll() {
@@ -68,7 +62,9 @@ export default {
             for (let i = 0; i < items.length; i++) {
                 let _item = items[i];
                 let _itemTop = _item.offsetTop;
-                if (top > _itemTop - 75) {
+                //  处理不同方式时的偏移量不同
+                let height = this.mode === 'raw_js_demo' ? 75 : (this.mode === 'css_demo' ? 10 : 0);
+                if (top > _itemTop - height) {
                     currentId = _item.id;
                 } else {
                     break;

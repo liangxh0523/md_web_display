@@ -9,5 +9,11 @@ body {
     margin: 0;
     height: 100%;
 }
-
+/* css的方式时，为锚点定位增加一个偏移量 */
+div .offset {
+    position: relative;
+    padding-top: 40px;
+    margin-top: -40px;
+    visibility: hidden;
+}
 /* rewrite element ui */
