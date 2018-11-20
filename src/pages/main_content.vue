@@ -41,7 +41,7 @@ export default {
     watch: {
         '$route.path': {
             immediate:true,
-            handler: function(newValue, oldValue) {
+            handler: function(newValue) {
                 this.mode = newValue.slice(1);
                 let index = 0;
                 //  在rendererMD.heading里有自己的作用域，用this访问不到
