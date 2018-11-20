@@ -44,26 +44,22 @@ export default {
             handler: function(newValue, oldValue) {
                 this.mode = newValue.slice(1);
                 let index = 0;
+                //  在rendererMD.heading里有自己的作用域，用this访问不到
+                let mode = this.mode
                 // 这里的处理只是为了同时展示多个demo，正常项目里不要这样处理
-                if (this.mode === 'raw_js_demo') {
-                    rendererMD.heading = function(text, level) {
-                       if (level < 3) {
-                           return `<h${level} id="${index++}" class="jump" >${text}</h${level}>`;
-                        } else {
-                           return `<h${level}>${text}</h${level}>`;
+                rendererMD.heading = function(text, level) {
+                    if (level < 3) {
+                        console.log(mode)
+                        if (mode === 'raw_js_demo') {
+                            return `<h${level} id="${index++}" class="jump" >${text}</h${level}>`;
+                        } else if (mode === 'css_demo') {
+                            return `<div class="jump offset" id="${index++}"></div><h${level}>${text}</h${level}>`;
                         }
-                    };
-                document.getElementsByTagName("html")[0].style['scroll-behavior'] = '';
-                } else if (this.mode === 'css_demo') {
-                    rendererMD.heading = function(text, level) {
-                       if (level < 3) {
-                           return `<div class="jump offset" id="${index++}"></div><h${level}>${text}</h${level}>`;
-                        } else {
-                           return `<h${level}>${text}</h${level}>`;
-                        }
-                    };
-                    document.getElementsByTagName("html")[0].style['scroll-behavior'] = 'smooth';
-                }
+                    } else {
+                        return `<h${level}>${text}</h${level}>`;
+                    }
+                };
+                document.getElementsByTagName("html")[0].style['scroll-behavior'] = this.mode === 'css_demo' ? 'smooth' : '';
                 this.compiledMarkdown = marked(str);
             }
         }
